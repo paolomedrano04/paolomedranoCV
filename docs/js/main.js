@@ -97,7 +97,9 @@
   const musica = document.getElementById("musica");
   if (D.spotifyTrackId) {
     const box = document.getElementById("spotify-embed");
-    box.innerHTML = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/${D.spotifyTrackId}" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+    box.innerHTML = `<p class="spotify-tip">▶ Dale play para escuchar</p><iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/${D.spotifyTrackId}?utm_source=generator&theme=0" width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
+    box.hidden = false;
+    musica.href = "#";
     musica.addEventListener("click", (e) => { e.preventDefault(); box.hidden = !box.hidden; });
   } else {
     musica.href = D.spotifySearch;
