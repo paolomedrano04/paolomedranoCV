@@ -148,9 +148,10 @@ blockquote { margin: 1.4em 0 0; padding: 18px 22px; border-left: 4px solid var(-
 #progreso { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60; }
 #progreso div { height: 100%; width: 0; background: var(--accent); transition: background .9s; }
 #musica { position: fixed; bottom: 18px; right: 18px; z-index: 50; display: flex; align-items: center; gap: 10px; padding: 8px 16px 8px 8px; border-radius: 99px; background: var(--fg); color: var(--bg); text-decoration: none; font-size: 13px; font-weight: 700; transition: background .9s, color .9s; }
-#musica .disco { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; animation: gira 4s linear infinite; }
+#musica .disco { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; animation: gira 4s linear infinite paused; }
+#musica.sonando .disco { animation-play-state: running; }
 @keyframes gira { to { transform: rotate(360deg); } }
-#spotify-embed { position: fixed; bottom: 70px; right: 18px; z-index: 50; width: 320px; max-width: calc(100vw - 36px); }
+#spotify-embed { position: fixed; bottom: 70px; visibility: visible; right: 18px; z-index: 50; width: 320px; max-width: calc(100vw - 36px); }
 #spotify-embed[hidden] { display: none; }
 .spotify-tip { margin: 0 0 6px; text-align: right; font: 700 12px Manrope, sans-serif; color: var(--fg); }
 #tooltip { position: fixed; pointer-events: none; background: #111; color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 13px; max-width: 260px; opacity: 0; transition: opacity .15s; z-index: 100; }
@@ -179,3 +180,5 @@ blockquote { margin: 1.4em 0 0; padding: 18px 22px; border-left: 4px solid var(-
   * { transition: none !important; animation: none !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+#spotify-embed.oculto { opacity: 0; pointer-events: none; }

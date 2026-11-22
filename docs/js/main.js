@@ -93,16 +93,46 @@
   const ioRev = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("visible"); ioRev.unobserve(e.target); } }), { threshold: 0.15 });
   document.querySelectorAll(".reveal").forEach((el) => ioRev.observe(el));
 
-  /* ---------- Música ---------- */
+  /* ---------- Música: Spotify iFrame API, arranca con la primera interacción ---------- */
   const musica = document.getElementById("musica");
+  const box = document.getElementById("spotify-embed");
+  musica.href = D.spotifySearch;
   if (D.spotifyTrackId) {
-    const box = document.getElementById("spotify-embed");
-    box.innerHTML = `<p class="spotify-tip">▶ Dale play para escuchar</p><iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/${D.spotifyTrackId}?utm_source=generator&theme=0" width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
+    let ctrl = null, sonando = false, pendiente = false;
+    box.innerHTML = '<div id="spotify-player"></div>';
     box.hidden = false;
-    musica.href = "#";
-    musica.addEventListener("click", (e) => { e.preventDefault(); box.hidden = !box.hidden; });
-  } else {
-    musica.href = D.spotifySearch;
+    box.classList.add("oculto");
+    const arrancar = () => {
+      if (sonando) return;
+      if (!ctrl) { pendiente = true; return; }
+      try { ctrl.play(); sonando = true; musica.classList.add("sonando"); } catch (e) {}
+    };
+    window.onSpotifyIframeApiReady = (API) => {
+      API.createController(document.getElementById("spotify-player"),
+        { uri: `spotify:track:${D.spotifyTrackId}`, width: "100%", height: 80 },
+        (c) => {
+          ctrl = c;
+          c.addListener("playback_update", (e) => { const p = !e.data.isPaused; sonando = p; musica.classList.toggle("sonando", p); });
+          c.addListener("ready", () => { if (pendiente) arrancar(); });
+        });
+    };
+    const s = document.createElement("script");
+    s.src = "https://open.spotify.com/embed/iframe-api/v1";
+    s.async = true;
+    document.body.appendChild(s);
+    // Los navegadores solo permiten audio tras una interacción: la primera la usamos para arrancar
+    const primera = (e) => {
+      if (e.target.closest && e.target.closest("#musica")) return;
+      arrancar();
+      ["pointerdown", "keydown", "touchstart"].forEach((t) => window.removeEventListener(t, primera, true));
+    };
+    ["pointerdown", "keydown", "touchstart"].forEach((t) => window.addEventListener(t, primera, true));
+    musica.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (!ctrl) return;
+      ctrl.togglePlay();
+    });
+    musica.addEventListener("contextmenu", (e) => { e.preventDefault(); box.classList.toggle("oculto"); });
   }
 
   /* ---------- Burbujas (force layout) ---------- */
