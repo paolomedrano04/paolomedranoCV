@@ -4,7 +4,7 @@ CV en formato scrollytelling, en tres actos (Personal, Deportiva y Profesional),
 
 ## Cómo verlo
 
-- **En línea:** activa GitHub Pages (Settings → Pages → Deploy from branch → `main` / root). Quedará en `https://paolomedrano0.github.io/balance-de-la-vida/`.
+- **En línea:** activa GitHub Pages (Settings → Pages → Deploy from branch → `main` / root). Quedará en `https://paolomedrano04.github.io/paolomedranoCV/`.
 - **En local:** abre `index.html` en el navegador.
 
 ## Visualizaciones con D3
