@@ -5,7 +5,8 @@
   const tip = d3.select("#tooltip");
   const showTip = (ev, html) => tip.html(html).style("opacity", 1).style("left", ev.clientX + 14 + "px").style("top", ev.clientY + 14 + "px");
   const hideTip = () => tip.style("opacity", 0);
-  const COLOR = { personal: "#c4683a", deporte: "#d7263d", pro: "#2bb3a3", oro: "#d4a72c" };
+  const COLOR = { personal: "#c8102e", deporte: "#1f3f8f", pro: "#4a90d9", oro: "#f2b705", cielo: "#7db7ff" };
+  const F_DISPLAY = "'IBM Plex Sans Condensed', sans-serif", F_TEXTO = "'IBM Plex Sans', sans-serif";
 
   /* ---------- Una sola observación por elemento: se dispara al entrar ---------- */
   function onVisible(el, fn, threshold = 0.3) {
@@ -24,7 +25,7 @@
     // poste y base (el deporte sostiene todo)
     g.append("path").attr("d", `M${px - 70},${H - 30} L${px + 70},${H - 30}`).attr("stroke", "currentColor").attr("stroke-width", 6).attr("stroke-linecap", "round");
     const poste = g.append("path").attr("d", `M${px - 62},${H - 34} L${px},${py + 6} L${px + 62},${H - 34} Z`).attr("fill", COLOR.deporte);
-    if (etiquetas) g.append("text").attr("x", px).attr("y", H - 46).attr("text-anchor", "middle").attr("class", "lbl-bal").text("Deportiva").attr("fill", "#fff").style("font", "700 13px Manrope");
+    if (etiquetas) g.append("text").attr("x", px).attr("y", H - 46).attr("text-anchor", "middle").attr("class", "lbl-bal").text("Deportiva").attr("fill", "#fff").style("font", "700 13px 'IBM Plex Sans'");
     const brazo = g.append("g").attr("transform", `translate(${px},${py})`);
     brazo.append("line").attr("x1", -L).attr("x2", L).attr("stroke", "currentColor").attr("stroke-width", 7).attr("stroke-linecap", "round");
     brazo.append("circle").attr("r", 10).attr("fill", COLOR.oro);
@@ -36,7 +37,7 @@
       pg.append("line").attr("class", "cuerda").attr("x1", -34).attr("y1", cuerda).attr("x2", 0).attr("y2", 0).attr("stroke", "currentColor").attr("opacity", .5);
       pg.append("line").attr("class", "cuerda").attr("x1", 34).attr("y1", cuerda).attr("x2", 0).attr("y2", 0).attr("stroke", "currentColor").attr("opacity", .5);
       pg.append("path").attr("d", `M-58,${cuerda} Q0,${cuerda + 40} 58,${cuerda} Z`).attr("fill", p.color);
-      if (etiquetas) pg.append("text").attr("y", cuerda + 54).attr("text-anchor", "middle").text(p.nombre).style("font", "700 14px Manrope").attr("fill", "currentColor");
+      if (etiquetas) pg.append("text").attr("y", cuerda + 54).attr("text-anchor", "middle").text(p.nombre).style("font", "700 14px 'IBM Plex Sans'").attr("fill", "currentColor");
       return { ...p, g: pg };
     });
     let ang = 0;
@@ -55,15 +56,6 @@
   }
   const INCL = { intro: 0, personal: -12, deporte: 0, pro: 12, final: 0 };
 
-  const balHero = balanza("#balanza-hero");
-  // la balanza duda y luego se equilibra
-  setTimeout(() => balHero(-14, 900, d3.easeCubicInOut), 300);
-  setTimeout(() => balHero(12, 900, d3.easeCubicInOut), 1300);
-  setTimeout(() => balHero(0, 1600), 2300);
-
-  const miniSvg = d3.select("#balanza-mini").append("svg").attr("width", "100%").attr("height", "100%").style("color", "var(--fg)");
-  const balMini = balanza(miniSvg.node(), { etiquetas: false });
-
   const balFinal = balanza("#balanza-final");
   balFinal(-10, 10);
   onVisible(document.querySelector("#final"), () => balFinal(0, 2200), 0.4);
@@ -77,17 +69,43 @@
       if (a === actoActual) return;
       actoActual = a;
       document.body.dataset.act = a;
-      balMini(INCL[a]);
     });
   }, { rootMargin: "-50% 0px -50% 0px" });
   document.querySelectorAll("section.acto").forEach((s) => ioActo.observe(s));
 
-  /* ---------- Barra de progreso ---------- */
-  const barra = document.querySelector("#progreso div");
-  window.addEventListener("scroll", () => {
-    const h = document.documentElement;
-    barra.style.width = (100 * h.scrollTop) / (h.scrollHeight - h.clientHeight) + "%";
-  }, { passive: true });
+  /* ---------- Progreso: el scroll recorre una pista de 400 m; cada parte es una valla ---------- */
+  (function pistaProgreso() {
+    const cont = d3.select("#pista-progreso");
+    const svg = cont.append("svg");
+    const H = 30;
+    function dibujar() {
+      const W = window.innerWidth;
+      svg.attr("viewBox", `0 0 ${W} ${H}`).selectAll("*").remove();
+      svg.append("rect").attr("width", W).attr("height", H).attr("fill", "#b5432f");
+      [1, H - 1].forEach((y) => svg.append("line").attr("x1", 0).attr("x2", W).attr("y1", y).attr("y2", y).attr("stroke", "#fff").attr("stroke-width", 2));
+      const doc = document.documentElement, total = doc.scrollHeight - doc.clientHeight;
+      const vallas = ["#personal", "#deporte", "#profesional", "#final"].map((sel) => document.querySelector(sel).offsetTop / total);
+      vallas.forEach((f, i) => {
+        const x = Math.min(W - 60, f * (W - 80) + 20);
+        svg.append("rect").attr("x", x - 2).attr("y", 6).attr("width", 4).attr("height", H - 12).attr("fill", "#fff");
+        svg.append("rect").attr("x", x - 2).attr("y", 6).attr("width", 4).attr("height", (H - 12) / 2).attr("fill", COLOR.personal);
+      });
+      svg.append("text").attr("class", "metros").attr("x", W - 12).attr("y", H / 2).attr("dy", ".35em").attr("text-anchor", "end")
+        .style("font", `600 13px ${F_DISPLAY}`).attr("fill", "#fff");
+      svg.append("circle").attr("class", "atleta").attr("r", 7).attr("cy", H / 2).attr("fill", COLOR.oro).attr("stroke", "#fff").attr("stroke-width", 2);
+      mover();
+    }
+    function mover() {
+      const doc = document.documentElement, W = window.innerWidth;
+      const f = Math.min(1, Math.max(0, doc.scrollTop / (doc.scrollHeight - doc.clientHeight)));
+      svg.select(".atleta").attr("cx", 20 + f * (W - 80));
+      svg.select(".metros").text(`${Math.round(f * 400)} m`);
+    }
+    dibujar();
+    window.addEventListener("scroll", () => requestAnimationFrame(mover), { passive: true });
+    window.addEventListener("resize", dibujar);
+    window.addEventListener("load", dibujar);
+  })();
 
   /* ---------- Reveal ---------- */
   const ioRev = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("visible"); ioRev.unobserve(e.target); } }), { threshold: 0.15 });
@@ -135,34 +153,26 @@
     musica.addEventListener("contextmenu", (e) => { e.preventDefault(); box.classList.toggle("oculto"); });
   }
 
-  /* ---------- Burbujas (force layout) ---------- */
+  /* ---------- Datos curiosos (force layout); la foto se muestra completa al lado ---------- */
   (function burbujas() {
-    const W = 560, H = 560;
+    const W = 560, H = 520;
     const svg = d3.select("#viz-burbujas").attr("viewBox", `0 0 ${W} ${H}`);
-    const frase = d3.select("#burbuja-frase");
+    const frase = d3.select("#burbuja-frase"), foto = document.getElementById("burbuja-img");
     const nodos = D.burbujas.map((b, i) => ({ ...b, x: W / 2 + Math.cos(i) * 120, y: H / 2 + Math.sin(i * 2) * 120 }));
-    const defs = svg.append("defs");
-    const g = svg.selectAll("g").data(nodos).join("g").style("cursor", "pointer");
-    g.append("circle").attr("r", (d) => d.r).attr("fill", "var(--card)").attr("stroke", "var(--accent)").attr("stroke-width", 2);
-    g.each(function (d) {
-      const n = d3.select(this);
-      if (d.img) {
-        defs.append("clipPath").attr("id", `clip-${d.id}`).append("circle").attr("r", d.r - 3);
-        n.append("image").attr("href", img(d.img)).attr("x", -d.r).attr("y", -d.r).attr("width", d.r * 2).attr("height", d.r * 2)
-          .attr("preserveAspectRatio", "xMidYMid slice").attr("clip-path", `url(#clip-${d.id})`);
-      } else {
-        n.append("text").text(d.emoji).attr("text-anchor", "middle").attr("dy", ".35em").style("font-size", d.r * 0.9 + "px");
-      }
-    });
+    const g = svg.selectAll("g").data(nodos).join("g").style("cursor", "pointer").attr("tabindex", 0).attr("role", "button")
+      .attr("aria-label", (d) => d.frase);
+    g.append("circle").attr("r", (d) => d.r).attr("fill", (d) => (d.img ? "#1a2233" : "#fff")).attr("stroke", "#1a2233").attr("stroke-width", 1.5);
+    g.append("text").text((d) => d.emoji).attr("text-anchor", "middle").attr("dy", ".35em").style("font-size", (d) => d.r * 0.8 + "px");
     const elegir = (ev, d) => {
       frase.text(d.frase);
-      g.select("circle").attr("stroke-width", (o) => (o === d ? 5 : 2));
+      if (d.img) { foto.src = img(d.img); foto.alt = d.frase; foto.hidden = false; } else { foto.hidden = true; }
+      g.select("circle").attr("stroke", (o) => (o === d ? COLOR.personal : "#1a2233")).attr("stroke-width", (o) => (o === d ? 4 : 1.5));
     };
-    g.on("mouseenter click", elegir);
+    g.on("click", elegir).on("keydown", (ev, d) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); elegir(ev, d); } });
     const sim = d3.forceSimulation(nodos)
       .force("x", d3.forceX(W / 2).strength(0.05))
       .force("y", d3.forceY(H / 2).strength(0.05))
-      .force("col", d3.forceCollide((d) => d.r + 5).strength(0.9))
+      .force("col", d3.forceCollide((d) => d.r + 6).strength(0.9))
       .alpha(0)
       .on("tick", () => g.attr("transform", (d) => `translate(${d.x},${d.y})`));
     g.attr("transform", (d) => `translate(${d.x},${d.y})`);
@@ -184,9 +194,9 @@
     const defs = svg.append("defs");
     const filas = svg.selectAll("g.f").data(datos).join("g").attr("class", "f");
     filas.append("text").attr("x", m.l - 16).attr("y", (d, i) => y(i) - 4).attr("text-anchor", "end").text((d) => d.nombre)
-      .style("font", "400 26px 'Instrument Serif'").attr("fill", "var(--fg)");
+      .style("font", "400 26px 'IBM Plex Sans Condensed'").attr("fill", "var(--fg)");
     filas.append("text").attr("x", m.l - 16).attr("y", (d, i) => y(i) + 16).attr("text-anchor", "end").text((d) => d.rol)
-      .style("font", "700 11px Manrope").style("text-transform", "uppercase").attr("fill", "var(--accent)");
+      .style("font", "700 11px 'IBM Plex Sans'").style("text-transform", "uppercase").attr("fill", "var(--accent)");
     const lin = filas.append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y1", (d, i) => y(i)).attr("y2", (d, i) => y(i))
       .attr("stroke", (d) => (d.rol === "Yo" ? "var(--accent)" : "var(--muted)")).attr("stroke-width", (d) => (d.rol === "Yo" ? 5 : 3)).attr("stroke-linecap", "round");
     const cara = filas.append("g").attr("transform", (d, i) => `translate(${x(0)},${y(i)})`);
@@ -195,7 +205,7 @@
       d3.select(this).append("circle").attr("r", 31).attr("fill", d.rol === "Yo" ? "var(--accent)" : "var(--card)");
       d3.select(this).append("image").attr("href", img(d.img)).attr("x", -28).attr("y", -28).attr("width", 56).attr("height", 56).attr("clip-path", `url(#cara-${i})`);
     });
-    const num = filas.append("text").attr("x", x(0)).attr("y", (d, i) => y(i) + 5).attr("dx", 42).style("font", "700 14px Manrope").attr("fill", "var(--fg)").text("");
+    const num = filas.append("text").attr("x", x(0)).attr("y", (d, i) => y(i) + 5).attr("dx", 42).style("font", "700 14px 'IBM Plex Sans'").attr("fill", "var(--fg)").text("");
     onVisible(document.querySelector("#viz-familia"), () => {
       const t = d3.transition().duration(1800).ease(d3.easeCubicOut);
       lin.transition(t).delay((d, i) => i * 150).attr("x2", (d) => x(d.edad));
@@ -228,11 +238,11 @@
       .attr("transform", (d) => `translate(${proj(d.coords)})`).style("cursor", "pointer");
     puntos.append("circle").attr("r", 0).attr("fill", (d) => (d.base ? "var(--fg)" : "var(--accent)")).attr("stroke", "var(--bg)").attr("stroke-width", 2);
     puntos.append("text").text((d) => d.nombre.split(",")[0]).attr("x", 12).attr("dy", ".35em")
-      .style("font", "700 12px Manrope").attr("fill", "var(--fg)").attr("opacity", 0);
+      .style("font", "700 12px 'IBM Plex Sans'").attr("fill", "var(--fg)").attr("opacity", 0);
     const panel = d3.select("#mapa-panel");
     puntos.on("click", (ev, d) => {
       puntos.select("circle").attr("r", (o) => (o === d ? 11 : 7));
-      panel.html(`<p class="kicker">${d.base ? "Casa" : "Destino"}</p><h3>${d.nombre}</h3><p>${d.texto}</p><div class="fotos-panel">${d.fotos.map((f) => `<img src="${img(f)}" alt="${d.nombre}">`).join("")}</div>`);
+      panel.html(`<h3>${d.nombre}</h3><p>${d.texto}</p><div class="fotos-panel">${d.fotos.map((f) => `<img src="${img(f)}" alt="${d.nombre}">`).join("")}</div>`);
     });
     onVisible(document.querySelector("#viz-mapa"), () => {
       arcos.attr("opacity", 1).each(function () {
@@ -253,16 +263,16 @@
     const x = d3.scalePoint().domain(datos.map((d) => d.anio + "-" + d.titulo)).range([m.l + 40, W - m.r - 40]);
     const cy = H / 2;
     const linea = svg.append("line").attr("x1", m.l).attr("x2", m.l).attr("y1", cy).attr("y2", cy).attr("stroke", "var(--fg)").attr("stroke-width", 3).attr("opacity", .5);
-    const col = { club: COLOR.oro, logro: COLOR.deporte, seleccion: "#f8eee8", meta: COLOR.oro };
+    const col = { club: "#ffffff", logro: COLOR.oro, seleccion: "#ff6b7d", meta: COLOR.oro };
     const ev = svg.selectAll("g.ev").data(datos).join("g").attr("class", "ev").attr("opacity", 0)
       .attr("transform", (d) => `translate(${x(d.anio + "-" + d.titulo)},${cy})`);
     ev.append("line").attr("y1", 0).attr("y2", (d, i) => (i % 2 ? 60 : -60)).attr("stroke", "var(--line)");
     ev.append("circle").attr("r", (d) => (d.tipo === "meta" ? 14 : 10)).attr("fill", (d) => col[d.tipo])
       .attr("stroke", (d) => (d.tipo === "meta" ? COLOR.oro : "none")).attr("stroke-dasharray", "3 3").attr("fill-opacity", (d) => (d.tipo === "meta" ? 0.15 : 1)).attr("stroke-width", 2);
     ev.append("text").attr("y", (d, i) => (i % 2 ? 84 : -96)).attr("text-anchor", "middle").text((d) => d.anio)
-      .style("font", "400 30px 'Instrument Serif'").attr("fill", (d) => col[d.tipo] === "#f8eee8" ? "var(--fg)" : col[d.tipo]);
+      .style("font", "400 30px 'IBM Plex Sans Condensed'").attr("fill", (d) => col[d.tipo]);
     ev.append("foreignObject").attr("x", -66).attr("width", 132).attr("height", 80).attr("y", (d, i) => (i % 2 ? 92 : -76))
-      .append("xhtml:div").style("font", "700 12.5px/1.25 Manrope").style("text-align", "center").style("color", "var(--fg)").text((d) => d.titulo);
+      .append("xhtml:div").style("font", "700 12.5px/1.25 'IBM Plex Sans'").style("text-align", "center").style("color", "var(--fg)").text((d) => d.titulo);
     ev.style("cursor", "help").on("mousemove", (e, d) => showTip(e, `<strong>${d.anio}. ${d.titulo}</strong><br>${d.texto}`)).on("mouseleave", hideTip);
     onVisible(svg.node(), () => {
       linea.transition().duration(1800).attr("x2", W - m.r);
@@ -277,7 +287,7 @@
     const svg = d3.select("#viz-carrera");
     const s = 4.4, Lr = 84.39 * s, R = 36.8 * s, cx = 450, cy = 210;
     const d = `M${cx + Lr / 2},${cy + R} A${R},${R} 0 0 0 ${cx + Lr / 2},${cy - R} L${cx - Lr / 2},${cy - R} A${R},${R} 0 0 0 ${cx - Lr / 2},${cy + R} Z`;
-    svg.append("path").attr("d", d).attr("fill", "none").attr("stroke", "#7a1f2b").attr("stroke-width", 46).attr("stroke-linejoin", "round");
+    svg.append("path").attr("d", d).attr("fill", "none").attr("stroke", "#b5432f").attr("stroke-width", 46).attr("stroke-linejoin", "round");
     svg.append("path").attr("d", d).attr("fill", "none").attr("stroke", "rgba(255,255,255,.25)").attr("stroke-width", 1).style("stroke-dasharray", "2 6");
     const pista = svg.append("path").attr("d", d).attr("fill", "none").attr("stroke", "none");
     const total = pista.node().getTotalLength();
@@ -285,7 +295,7 @@
     // meta
     const meta = en(0);
     svg.append("line").attr("x1", meta.x).attr("x2", meta.x).attr("y1", meta.y - 26).attr("y2", meta.y + 26).attr("stroke", "#fff").attr("stroke-width", 4);
-    svg.append("text").attr("x", meta.x).attr("y", meta.y + 46).attr("text-anchor", "middle").text("salida y meta").style("font", "700 12px Manrope").attr("fill", "var(--muted)");
+    svg.append("text").attr("x", meta.x).attr("y", meta.y + 46).attr("text-anchor", "middle").text("salida y meta").style("font", "700 12px 'IBM Plex Sans'").attr("fill", "var(--muted)");
     // vallas
     const vallas = d3.range(10).map((k) => 45 + 35 * k);
     vallas.forEach((m, k) => {
@@ -293,15 +303,15 @@
       const ang = (Math.atan2(q.y - p.y, q.x - p.x) * 180) / Math.PI + 90;
       svg.append("g").attr("transform", `translate(${p.x},${p.y}) rotate(${ang})`).attr("class", "valla")
         .call((g) => { g.append("line").attr("x1", -20).attr("x2", 20).attr("stroke", "#fff").attr("stroke-width", 5); g.append("line").attr("x1", -20).attr("x2", 20).attr("stroke", COLOR.deporte).attr("stroke-width", 5).attr("stroke-dasharray", "6 6"); });
-      svg.append("text").attr("x", p.x).attr("y", p.y).attr("dy", p.y > cy ? 40 : -32).attr("text-anchor", "middle").text(k + 1).style("font", "700 11px Manrope").attr("fill", "var(--muted)");
+      svg.append("text").attr("x", p.x).attr("y", p.y).attr("dy", p.y > cy ? 40 : -32).attr("text-anchor", "middle").text(k + 1).style("font", "700 11px 'IBM Plex Sans'").attr("fill", "var(--muted)");
     });
-    svg.append("text").attr("x", cx).attr("y", cy - 6).attr("text-anchor", "middle").text("400 m").style("font", "400 64px 'Instrument Serif'").attr("fill", "var(--fg)");
-    svg.append("text").attr("x", cx).attr("y", cy + 30).attr("text-anchor", "middle").text("10 vallas de 91,4 cm").style("font", "700 13px Manrope").attr("fill", "var(--muted)");
+    svg.append("text").attr("x", cx).attr("y", cy - 6).attr("text-anchor", "middle").text("400 m").style("font", "400 64px 'IBM Plex Sans Condensed'").attr("fill", "var(--fg)");
+    svg.append("text").attr("x", cx).attr("y", cy + 30).attr("text-anchor", "middle").text("10 vallas de 91,4 cm").style("font", "700 13px 'IBM Plex Sans'").attr("fill", "var(--muted)");
     const estela = svg.append("path").attr("d", d).attr("fill", "none").attr("stroke", COLOR.oro).attr("stroke-width", 5).attr("stroke-linecap", "round")
       .attr("stroke-dasharray", `0 ${total}`);
     const corredor = svg.append("g");
     corredor.append("circle").attr("r", 13).attr("fill", COLOR.oro).attr("stroke", "#fff").attr("stroke-width", 3);
-    corredor.append("text").text("P").attr("text-anchor", "middle").attr("dy", ".35em").style("font", "700 12px Manrope").attr("fill", "#1b0d10");
+    
     const reloj = document.getElementById("reloj");
     const sec = document.getElementById("carrera");
     function actualizar() {
@@ -345,14 +355,14 @@
     const H = m.t + m.b + fila * datos.length;
     const svg = d3.select("#viz-gantt").append("svg").attr("viewBox", `0 0 ${W} ${H}`);
     const x = d3.scaleTime().domain([new Date(2022, 0, 1), new Date(2028, 0, 1)]).range([m.l, W - m.r]);
-    const col = { estudio: COLOR.pro, proyecto: "#7fb3ff", liderazgo: COLOR.oro, trabajo: "#e8795a" };
+    const col = { estudio: COLOR.cielo, proyecto: "#9fd8cb", liderazgo: COLOR.oro, trabajo: "#ff6b7d" };
     svg.append("g").attr("class", "eje").attr("transform", `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(d3.timeYear.every(1)).tickSize(-(H - m.t - m.b)))
       .call((g) => g.selectAll("line").attr("stroke-dasharray", "2 4"));
     const hoy = new Date(2026, 10, 21);
     svg.append("line").attr("x1", x(hoy)).attr("x2", x(hoy)).attr("y1", m.t - 10).attr("y2", H - m.b).attr("stroke", "var(--fg)").attr("stroke-width", 2);
-    svg.append("text").attr("x", x(hoy)).attr("y", m.t - 14).attr("text-anchor", "middle").text("hoy").style("font", "600 22px Caveat").attr("fill", "var(--fg)");
+    svg.append("text").attr("x", x(hoy)).attr("y", m.t - 14).attr("text-anchor", "middle").text("hoy").style("font", "500 14px 'IBM Plex Sans'").attr("fill", "var(--fg)");
     const filas = svg.selectAll("g.fila").data(datos).join("g").attr("transform", (d, i) => `translate(0,${m.t + i * fila})`);
-    filas.append("text").attr("x", m.l - 14).attr("y", fila / 2).attr("dy", ".35em").attr("text-anchor", "end").text((d) => d.item).style("font", "500 14px Manrope").attr("fill", "var(--fg)");
+    filas.append("text").attr("x", m.l - 14).attr("y", fila / 2).attr("dy", ".35em").attr("text-anchor", "end").text((d) => d.item).style("font", "500 14px 'IBM Plex Sans'").attr("fill", "var(--fg)");
     const barras = filas.append("rect").attr("x", (d) => x(d.a)).attr("y", 10).attr("height", fila - 20).attr("rx", 6).attr("width", 0)
       .attr("fill", (d) => col[d.tipo]).attr("fill-opacity", (d) => (d.fin > "2026-11" ? 0.45 : 1));
     barras.on("mousemove", (e, d) => showTip(e, `<strong>${d.item}</strong><br>${d.inicio.replace("-", "/")} a ${d.fin > "2026-11" ? "egreso en " + d.fin.slice(0, 4) : d.fin.replace("-", "/")}`)).on("mouseleave", hideTip);
@@ -378,11 +388,11 @@
       svg.append("line").attr("x1", cx).attr("y1", cy).attr("x2", cx + R * Math.cos(ang(i))).attr("y2", cy + R * Math.sin(ang(i))).attr("stroke", "var(--line)");
       const lx = cx + (R + 30) * Math.cos(ang(i)), ly = cy + (R + 30) * Math.sin(ang(i));
       svg.append("text").attr("x", lx).attr("y", ly).attr("dy", ".35em").attr("text-anchor", Math.abs(Math.cos(ang(i))) < 0.2 ? "middle" : Math.cos(ang(i)) > 0 ? "start" : "end")
-        .text(d.k).style("font", "700 13px Manrope").attr("fill", "var(--fg)");
+        .text(d.k).style("font", "700 13px 'IBM Plex Sans'").attr("fill", "var(--fg)");
     });
-    const poly = svg.append("polygon").attr("fill", COLOR.pro).attr("fill-opacity", 0.3).attr("stroke", COLOR.pro).attr("stroke-width", 3)
+    const poly = svg.append("polygon").attr("fill", COLOR.cielo).attr("fill-opacity", 0.25).attr("stroke", COLOR.cielo).attr("stroke-width", 3)
       .attr("points", datos.map(() => `${cx},${cy}`).join(" "));
-    const pts = svg.selectAll("circle.p").data(datos).join("circle").attr("class", "p").attr("cx", cx).attr("cy", cy).attr("r", 6).attr("fill", COLOR.pro).attr("stroke", "#fff").attr("stroke-width", 2)
+    const pts = svg.selectAll("circle.p").data(datos).join("circle").attr("class", "p").attr("cx", cx).attr("cy", cy).attr("r", 6).attr("fill", COLOR.cielo).attr("stroke", "#fff").attr("stroke-width", 2)
       .on("mousemove", (e, d) => showTip(e, `<strong>${d.k}</strong>: ${d.v}`)).on("mouseleave", hideTip);
     onVisible(svg.node(), () => {
       poly.transition().duration(1500).ease(d3.easeElasticOut.period(.6)).attr("points", datos.map((d, i) => [cx + r(d.v) * Math.cos(ang(i)), cy + r(d.v) * Math.sin(ang(i))].join(",")).join(" "));
