@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Paolo Medrano Terán | El balance de la vida</title>
   <meta name="description" content="CV interactivo de Paolo Medrano Terán: vida personal, atletismo y carrera profesional, hecho con D3.js." />
-  <link rel="stylesheet" href="css/styles.css?v=8" />
+  <link rel="stylesheet" href="css/styles.css?v=9" />
 </head>
 <body data-act="intro">
 
@@ -38,16 +38,11 @@
 
     <!-- ============ DATOS ============ -->
     <section class="acto" data-act="intro" id="burbujas">
-      <div class="dos-col">
-        <div class="col-txt">
-          <h2>Un poco de mí</h2>
-          <p>Cosas que no aparecen en un CV tradicional. Selecciona un círculo para leerlo; algunos tienen foto.</p>
-          <div id="burbuja-detalle" class="burbuja-detalle">
-            <p class="burbuja-frase" id="burbuja-frase">Empieza por cualquiera.</p>
-            <img id="burbuja-img" alt="" hidden>
-          </div>
-        </div>
-        <div class="col-viz"><svg id="viz-burbujas"></svg></div>
+      <h2>Un poco de mí</h2>
+      <p class="intro">Lo que no suele aparecer en un CV. Los datos con foto la muestran al seleccionarlos.</p>
+      <div class="ficha">
+        <div id="ficha-items" class="ficha-items"></div>
+        <figure class="ficha-foto"><img id="ficha-img" alt=""><figcaption id="ficha-cap"></figcaption></figure>
       </div>
     </section>
 
@@ -417,8 +412,8 @@
   <script src="js/vendor/d3.min.js"></script>
   <script src="js/vendor/topojson-client.min.js"></script>
   <script src="data/countries-110m.js"></script>
-  <script src="js/data.js?v=8"></script>
-  <script src="js/main.js?v=8"></script>
+  <script src="js/data.js?v=9"></script>
+  <script src="js/main.js?v=9"></script>
   <script async src="https://www.instagram.com/embed.js"></script>
   <script async src="https://www.tiktok.com/embed.js"></script>
 </body>

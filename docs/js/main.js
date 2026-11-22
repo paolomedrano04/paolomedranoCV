@@ -155,34 +155,19 @@
     musica.addEventListener("contextmenu", (e) => { e.preventDefault(); box.classList.toggle("oculto"); });
   }
 
-  /* ---------- Datos curiosos (force layout); la foto se muestra completa al lado ---------- */
-  (function burbujas() {
-    const W = 560, H = 520;
-    const svg = d3.select("#viz-burbujas").attr("viewBox", `0 0 ${W} ${H}`);
-    const frase = d3.select("#burbuja-frase"), foto = document.getElementById("burbuja-img");
-    const nodos = D.burbujas.map((b, i) => ({ ...b, x: W / 2 + Math.cos(i) * 120, y: H / 2 + Math.sin(i * 2) * 120 }));
-    const g = svg.selectAll("g").data(nodos).join("g").style("cursor", "pointer").attr("tabindex", 0).attr("role", "button")
-      .attr("aria-label", (d) => d.frase);
-    g.append("circle").attr("r", (d) => d.r).attr("fill", (d) => (d.img ? "#1a2233" : "#fff")).attr("stroke", "#1a2233").attr("stroke-width", 1.5);
-    g.append("text").text((d) => d.emoji).attr("text-anchor", "middle").attr("dy", ".35em").style("font-size", (d) => d.r * 0.8 + "px");
-    const elegir = (ev, d) => {
-      frase.text(d.frase);
-      if (d.img) { foto.src = img(d.img); foto.alt = d.frase; foto.hidden = false; } else { foto.hidden = true; }
-      g.select("circle").attr("stroke", (o) => (o === d ? COLOR.personal : "#1a2233")).attr("stroke-width", (o) => (o === d ? 4 : 1.5));
-    };
-    g.on("click", elegir).on("keydown", (ev, d) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); elegir(ev, d); } });
-    const sim = d3.forceSimulation(nodos)
-      .force("x", d3.forceX(W / 2).strength(0.05))
-      .force("y", d3.forceY(H / 2).strength(0.05))
-      .force("col", d3.forceCollide((d) => d.r + 6).strength(0.9))
-      .alpha(0)
-      .on("tick", () => g.attr("transform", (d) => `translate(${d.x},${d.y})`));
-    g.attr("transform", (d) => `translate(${d.x},${d.y})`);
-    g.call(d3.drag()
-      .on("start", (ev, d) => { if (!ev.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
-      .on("drag", (ev, d) => { d.fx = ev.x; d.fy = ev.y; })
-      .on("end", (ev, d) => { if (!ev.active) sim.alphaTarget(0); d.fx = null; d.fy = null; }));
-    onVisible(document.querySelector("#burbujas"), () => sim.alpha(1).restart(), 0.2);
+  /* ---------- Un poco de mí: ficha de datos (data join de D3) ---------- */
+  (function ficha() {
+    const foto = d3.select("#ficha-img"), cap = d3.select("#ficha-cap");
+    const items = d3.select("#ficha-items").selectAll("button").data(D.datos).join("button")
+      .attr("type", "button").attr("class", (d) => "ficha-item" + (d.img ? " con-foto" : ""));
+    items.append("span").attr("class", "ficha-label").text((d) => d.label);
+    items.append("span").attr("class", "ficha-valor").text((d) => d.valor);
+    function elegir(d) {
+      items.classed("activo", (o) => o === d);
+      if (d.img) { foto.attr("src", img(d.img)).attr("alt", d.valor); cap.text(`${d.label}: ${d.valor}`); }
+    }
+    items.on("click", (ev, d) => elegir(d)).on("mouseenter", (ev, d) => { if (d.img) elegir(d); });
+    elegir(D.datos[0]);
   })();
 
   /* ---------- Familia: edades ---------- */

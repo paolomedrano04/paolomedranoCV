@@ -12,7 +12,7 @@ CV en formato scrollytelling, en tres actos (Personal, Deportiva y Profesional),
 | Sección | Visualización | Técnica D3 |
 |---|---|---|
 | Portada y cierre | Balanza que se inclina según el acto | `transition`, `tween`, easing elástico |
-| Datos curiosos | Burbujas con fotos, arrastrables | `forceSimulation`, `forceCollide`, `drag` |
+| Un poco de mí | Ficha de datos con foto al seleccionar | data join (`selectAll`, `join`), eventos |
 | Familia | Edades con fotos (lollipop) | `scaleLinear`, `axisBottom`, transiciones escalonadas |
 | Viajes | Mapa con rutas desde Lima | `geoMercator`, `geoPath`, TopoJSON, animación de trazos |
 | Deportiva | Línea de tiempo 2013 a 2027 | `scalePoint`, tooltips |
@@ -27,7 +27,7 @@ Además, el fondo y la paleta cambian con cada acto (IntersectionObserver y vari
 ```
 docs/index.html     textos y estructura (GitHub Pages publica la carpeta docs)
 css/styles.css      estilos y paletas por acto
-js/data.js          datos editables (burbujas, familia, viajes, marcas, trayectoria, skills)
+js/data.js          datos editables (ficha, familia, viajes, marcas, trayectoria, skills)
 js/main.js          todas las visualizaciones
 js/vendor/          d3.min.js y topojson-client.min.js
 data/               mapa mundial (world-atlas 110m)

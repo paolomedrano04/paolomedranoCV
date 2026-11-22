@@ -4,19 +4,19 @@ window.DATA = {
   spotifyTrackId: "0VV0AMmgLBUhzuFedr3F3e",
   spotifySearch: "https://open.spotify.com/search/Dance%20No%20More%20Harry%20Styles",
 
-  burbujas: [
-    { id: "matcha", img: "burbuja_matcha", emoji: "🍵", r: 52, frase: "Mi bebida favorita: el Iced Banana Bread Matcha de FUMU." },
-    { id: "makis", img: "burbuja_makis", emoji: "🍣", r: 46, frase: "Mi comida favorita son los makis." },
-    { id: "cafe", img: "burbuja_cafe", emoji: "☕", r: 48, frase: "Puedo tomar café las 24 horas del día, en cualquier lugar y momento." },
-    { id: "signos", emoji: "♐", r: 36, frase: "Nací un 25 de noviembre, pero no creo en los signos." },
-    { id: "marvel", emoji: "🎬", r: 40, frase: "Me encanta todo el universo cinematográfico de Marvel." },
-    { id: "hg", img: "burbuja_juegos_hambre", emoji: "📚", r: 44, frase: "Soy fan de la saga de Los Juegos del Hambre." },
-    { id: "musica", emoji: "🎧", r: 38, frase: "Me encanta escuchar géneros musicales de todo tipo." },
-    { id: "trotar", img: "uruguay_cesped", emoji: "🌅", r: 46, frase: "Mi plan favorito: trotar durante el atardecer." },
-    { id: "postres", emoji: "🍰", r: 38, frase: "También me encanta preparar postres." },
-    { id: "vallas", img: "tacos_salida", emoji: "🏃", r: 50, frase: "Vivo entre vallas: 400 metros y 10 obstáculos." },
-    { id: "data", img: "utec_honors", emoji: "📊", r: 44, frase: "Estudio Ciencia de Datos en UTEC." },
-    { id: "cumple", emoji: "🎂", r: 34, frase: "Esta semana cumplo 22 años." }
+  datos: [
+    { label: "Bebida favorita", valor: "Iced Banana Bread Matcha de FUMU", img: "burbuja_matcha" },
+    { label: "Comida favorita", valor: "Makis", img: "burbuja_makis" },
+    { label: "Café", valor: "A cualquier hora y en cualquier lugar", img: "burbuja_cafe" },
+    { label: "Hobby", valor: "Trotar al atardecer", img: "uruguay_cesped" },
+    { label: "En la cocina", valor: "Preparar postres" },
+    { label: "Saga favorita", valor: "Los Juegos del Hambre", img: "burbuja_juegos_hambre" },
+    { label: "En el cine", valor: "Todo el universo de Marvel" },
+    { label: "Música", valor: "De todos los géneros" },
+    { label: "Cumpleaños", valor: "25 de noviembre, aunque no creo en los signos" },
+    { label: "Mi prueba", valor: "400 metros con vallas", img: "tacos_salida" },
+    { label: "Carrera", valor: "Ciencia de Datos en UTEC", img: "utec_honors" },
+    { label: "Edad", valor: "22 años esta semana" }
   ],
 
   familia: [

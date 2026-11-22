@@ -79,10 +79,16 @@ strong { font-weight: 600; }
 .galeria img { width: 100%; border-radius: 4px; }
 figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
 
-/* Datos curiosos */
-.burbuja-detalle { margin-top: 1.5em; padding-left: 18px; border-left: 3px solid var(--accent); }
-.burbuja-frase { font-size: 22px; line-height: 1.4; font-weight: 300; }
-#burbuja-img { max-height: 340px; width: auto; border-radius: 4px; }
+/* Un poco de mí */
+.ficha { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 5vw; max-width: 1200px; margin: 5vh auto 0; align-items: start; }
+.ficha-items { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; }
+.ficha-item { display: flex; flex-direction: column; gap: 2px; text-align: left; padding: 16px 0 16px 14px; border: 0; border-top: 1px solid var(--line); border-left: 3px solid transparent; background: none; color: inherit; font: inherit; cursor: default; transition: border-color .2s, background-color .2s; }
+.ficha-item.con-foto { cursor: pointer; }
+.ficha-item.activo { border-left-color: var(--accent); background: var(--card); }
+.ficha-label { font-size: 13px; color: var(--muted); }
+.ficha-valor { font-family: var(--display); font-size: 21px; font-weight: 500; line-height: 1.25; }
+.ficha-foto { margin: 0; position: sticky; top: 80px; }
+.ficha-foto img { max-height: 70vh; width: auto; max-width: 100%; border-radius: 4px; }
 
 /* Amigos */
 .amigos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; max-width: 1200px; margin: 6vh auto 0; align-items: start; }
@@ -170,7 +176,7 @@ figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
 @media (max-width: 860px) {
   body { font-size: 16px; }
   .acto { padding: 10vh 6vw; }
-  .hero, .portada-acto, .dos-col, .mapa-wrap, .duelo, .amigos { grid-template-columns: minmax(0, 1fr); }
+  .hero, .portada-acto, .dos-col, .mapa-wrap, .duelo, .amigos, .ficha { grid-template-columns: minmax(0, 1fr); }
   .hero-datos { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
   .hero-datos dt { font-size: 30px; }
   .portada-foto img { margin: 0; max-height: none; width: 100%; }
