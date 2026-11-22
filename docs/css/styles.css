@@ -123,6 +123,13 @@ figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
 .duelo article { border-top: 3px solid var(--accent); padding-top: 20px; }
 .duelo img { width: 100%; border-radius: 4px; margin-top: 12px; }
 
+/* Publicaciones de Instagram y TikTok */
+.embeds { display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; align-items: flex-start; max-width: 1200px; margin: 5vh auto 0; }
+.embed { width: 100%; max-width: 400px; }
+.embed blockquote { margin: 0 !important; min-width: 0 !important; width: 100% !important; }
+.embed blockquote > a, .embed blockquote section a { display: block; padding: 24px; background: #fff; color: #1a2233; border-radius: 6px; text-align: center; font-weight: 500; }
+.duelo .embed { margin-top: 12px; max-width: 460px; }
+
 /* Profesional */
 .proyectos, .liderazgo { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px; max-width: 1200px; margin: 5vh auto 0; align-items: start; }
 .proyectos article, .liderazgo article { border-top: 3px solid var(--accent); padding-top: 20px; }

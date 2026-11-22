@@ -105,6 +105,8 @@
     window.addEventListener("scroll", () => requestAnimationFrame(mover), { passive: true });
     window.addEventListener("resize", dibujar);
     window.addEventListener("load", dibujar);
+    // los embeds de Instagram y TikTok cambian el alto de la página al cargar
+    let t; new ResizeObserver(() => { clearTimeout(t); t = setTimeout(dibujar, 300); }).observe(document.body);
   })();
 
   /* ---------- Reveal ---------- */
