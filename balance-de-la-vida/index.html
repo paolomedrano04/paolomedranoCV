@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Paolo Medrano Terán | El balance de la vida</title>
+  <meta name="description" content="CV en formato scrollytelling: lo personal, lo deportivo y lo profesional de Paolo Medrano Terán, hecho con D3.js." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-act="intro">
+
+  <!-- Balanza fija: indica en qué acto estás -->
+  <div id="balanza-mini" aria-hidden="true"></div>
+  <div id="progreso"><div></div></div>
+
+  <a id="musica" href="#" target="_blank" rel="noopener" title="Dance No More, Harry Styles">
+    <span class="disco">♪</span><span class="musica-txt">Dance No More</span>
+  </a>
+  <div id="spotify-embed" hidden></div>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section class="acto" data-act="intro" id="inicio">
+      <div class="hero">
+        <div class="hero-txt">
+          <p class="kicker">Un CV en tres actos</p>
+          <h1>Paolo Medrano Terán</h1>
+          <p class="subtitulo"><em>El balance de la vida</em></p>
+          <p class="lead">Atleta, científico de datos en formación y practicante en tecnología. Tres mundos que compiten por mis horas y que, juntos, me sostienen. Haz scroll y te lo cuento.</p>
+          <div class="chips">
+            <span>22 años esta semana</span><span>Barranco, Lima</span><span>400 m con vallas</span><span>Ciencia de Datos, UTEC</span>
+          </div>
+        </div>
+        <div class="hero-viz">
+          <svg id="balanza-hero" viewBox="0 0 520 380" role="img" aria-label="Balanza con los tres actos de mi vida"></svg>
+        </div>
+      </div>
+      <div class="scroll-hint">desliza ↓</div>
+    </section>
+
+    <!-- ============ BURBUJAS ============ -->
+    <section class="acto" data-act="intro" id="burbujas">
+      <div class="dos-col">
+        <div class="col-txt reveal">
+          <p class="kicker">Antes de empezar</p>
+          <h2>Doce datos para conocerme</h2>
+          <p>Cada burbuja es un pedacito de mí. Pasa el cursor o tócalas para leerlas, y arrástralas si quieres.</p>
+          <p class="burbuja-frase" id="burbuja-frase">☝ Elige una burbuja.</p>
+        </div>
+        <div class="col-viz"><svg id="viz-burbujas"></svg></div>
+      </div>
+    </section>
+
+    <!-- ================= ACTO I: PERSONAL ================= -->
+    <section class="acto portada-acto" data-act="personal" id="personal">
+      <p class="num-acto">Acto I</p>
+      <h2 class="titulo-acto">Personal</h2>
+      <p class="lead centrado">Familia, amigos y los lugares que me cambiaron.</p>
+    </section>
+
+    <section class="acto" data-act="personal" id="familia">
+      <div class="dos-col">
+        <div class="col-txt reveal">
+          <p class="kicker">La familia Medrano Terán</p>
+          <h2>Cinco personas, una casa</h2>
+          <p>Soy el mayor de tres hermanos. Mis papás, Paola y Dante, mi hermana Daniela y el menor de la casa, Dacio.</p>
+          <p>Mi mamá es ingeniera de sistemas y lleva más de 20 años liderando el área de tecnología en la industria de hidrocarburos del Perú. Es una de las principales razones por las que elegí Data Science, y admiro cómo se ha ganado su lugar año tras año.</p>
+        </div>
+        <div class="col-viz reveal">
+          <svg id="viz-familia"></svg>
+          <p class="nota-viz">Edades en 2026. Cada barra es una vida que me acompaña.</p>
+        </div>
+      </div>
+      <div class="galeria reveal">
+        <figure class="polaroid" style="--r:-3deg"><img src="img/familia_completa.jpg" alt="Familia completa" loading="lazy"><figcaption>los cinco</figcaption></figure>
+        <figure class="polaroid" style="--r:2deg"><img src="img/brasil_familia.jpg" alt="Familia en Brasil" loading="lazy"><figcaption>Brasil, en familia</figcaption></figure>
+        <figure class="polaroid" style="--r:-1.5deg"><img src="img/mama_y_yo_noche.jpg" alt="Con mi mamá" loading="lazy"><figcaption>mamá y yo</figcaption></figure>
+        <figure class="polaroid" style="--r:2.5deg"><img src="img/bolivarianos_familia.jpg" alt="Papá tomando la foto en los Bolivarianos" loading="lazy"><figcaption>papá, siempre detrás de la cámara</figcaption></figure>
+        <figure class="polaroid" style="--r:-2deg"><img src="img/dacio_y_yo.jpg" alt="Con Dacio" loading="lazy"><figcaption>Dacio y yo</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="acto" data-act="personal" id="daniela">
+      <div class="dos-col invertido">
+        <div class="col-txt reveal">
+          <p class="kicker">Mi hermana, mi compañera de pista</p>
+          <h2>Daniela</h2>
+          <p>Empezamos juntos en el atletismo hace más de 10 años. Desde entonces hemos competido a nivel nacional e internacional, muchas veces en el mismo torneo.</p>
+          <p>Los dos somos campeones nacionales universitarios y campeones nacionales de nuestras categorías. Compartimos casa, pista y medallero.</p>
+        </div>
+        <div class="col-viz collage reveal">
+          <figure class="polaroid" style="--r:-2deg"><img src="img/daniela_trofeo.jpg" alt="Con Daniela y un trofeo" loading="lazy"><figcaption>campeones</figcaption></figure>
+          <figure class="polaroid" style="--r:3deg"><img src="img/muro_medallas.jpg" alt="Muro de medallas" loading="lazy"><figcaption>el muro de la casa</figcaption></figure>
+          <figure class="polaroid" style="--r:-1deg"><img src="img/daniela_medallas.jpg" alt="Con Daniela y medallas" loading="lazy"><figcaption>siempre juntos</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="acto" data-act="personal" id="infancia">
+      <div class="dos-col">
+        <div class="col-txt reveal">
+          <p class="kicker">25 de noviembre de 2004</p>
+          <h2>Barranco y San Luis</h2>
+          <p>Nací en Barranco y estudié inicial, primaria y secundaria en el colegio San Luis Maristas de Barranco.</p>
+          <ul class="lista-hitos">
+            <li><strong>Presidente</strong> del Consejo Estudiantil</li>
+            <li><strong>Excelencia</strong> académica</li>
+            <li><strong>Múltiple campeón</strong> nacional escolar de atletismo</li>
+            <li><strong>Seleccionado nacional</strong> en los Juegos Sudamericanos Escolares 2018</li>
+          </ul>
+          <p>Siempre me tocó liderar, y lo disfruté.</p>
+        </div>
+        <div class="col-viz collage reveal">
+          <figure class="polaroid grande" style="--r:2deg"><img src="img/infancia_444.jpg" alt="Compitiendo de niño" loading="lazy"><figcaption>los primeros dorsales</figcaption></figure>
+          <figure class="polaroid" style="--r:-3deg"><img src="img/amigos_colegio.jpg" alt="Amigos del colegio" loading="lazy"><figcaption>los de toda la vida</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="acto" data-act="personal" id="amigos">
+      <p class="kicker centrado">Un círculo pequeño y elegido</p>
+      <h2 class="centrado">Mis amigos</h2>
+      <div class="tarjetas-amigos">
+        <article class="tarjeta reveal">
+          <img src="img/bihonda_y_yo.jpg" alt="Con Bihonda" loading="lazy">
+          <h3>Bihonda</h3>
+          <p>Nos conocimos en 2022, en Proyectos Interdisciplinarios 2. Ella era mi mentora de Programación 2 y terminó cambiándose de carrera por mi culpa. Desde entonces somos inseparables: es la amistad que más valoro hoy.</p>
+        </article>
+        <article class="tarjeta reveal">
+          <img src="img/arequipa_misti.jpg" alt="Con Jimena y Jeimy en Arequipa" loading="lazy">
+          <h3>Jimena y Jeimy</h3>
+          <p>Jimena Reyes y Jeimy Pretell son mis mejores amigas del atletismo. Representamos al Perú en los Juegos Bolivarianos 2025, competimos en Arequipa, entrenamos en Tumbes y viajamos a Uruguay.</p>
+        </article>
+        <article class="tarjeta reveal">
+          <img src="img/amigos_noche.jpg" alt="Grupo de amigos" loading="lazy">
+          <h3>Los de siempre</h3>
+          <p>Mis amigos del colegio y de la pista. Pocos, pero los de verdad.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="acto" data-act="personal" id="plot-twists">
+      <p class="kicker centrado">Lo que no vi venir</p>
+      <h2 class="centrado">Plot twists</h2>
+      <p class="centrado nota-viz">Toca cada tarjeta para voltearla.</p>
+      <div class="twists">
+        <button class="twist"><span class="frente">2022</span><span class="dorso">Mi mejor amiga se cambió de carrera… por mi culpa.</span></button>
+        <button class="twist"><span class="frente">+50 m</span><span class="dorso">Iba ganando por más de 50 metros y me caí en la última recta.</span></button>
+        <button class="twist"><span class="frente">Lima 24</span><span class="dorso">Trabajé en el Mundial U20 de Atletismo en mi propia ciudad.</span></button>
+        <button class="twist"><span class="frente">0 años</span><span class="dorso">Entré a Hochschild siendo el único postulante sin experiencia laboral.</span></button>
+        <button class="twist"><span class="frente">3 → 0</span><span class="dorso">Tras tres años de lesiones, 2026 fue mi primera temporada completa.</span></button>
+      </div>
+    </section>
+
+    <section class="acto" data-act="personal" id="viajes">
+      <p class="kicker centrado">El mapa de mis viajes</p>
+      <h2 class="centrado">Desde Lima hacia el mundo</h2>
+      <div class="mapa-wrap">
+        <svg id="viz-mapa"></svg>
+        <aside id="mapa-panel" class="panel">
+          <h3>Elige un punto del mapa</h3>
+          <p>Cada línea sale de Lima. Toca un destino para ver la historia.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ================= ACTO II: DEPORTIVA ================= -->
+    <section class="acto portada-acto" data-act="deporte" id="deporte">
+      <p class="num-acto">Acto II</p>
+      <h2 class="titulo-acto">Deportiva</h2>
+      <p class="lead centrado">Más de 10 años en la pista. 400 metros, 10 vallas.</p>
+      <figure class="polaroid hero-foto reveal" style="--r:-2deg"><img src="img/bolivarianos_020.jpg" alt="Juegos Bolivarianos 2025" loading="lazy"><figcaption>XX Juegos Bolivarianos, dorsal 020</figcaption></figure>
+    </section>
+
+    <section class="acto" data-act="deporte" id="linea-deporte">
+      <p class="kicker centrado">De los 8 años a hoy</p>
+      <h2 class="centrado">Mi línea de tiempo deportiva</h2>
+      <div id="viz-linea-deporte" class="viz-ancho"></div>
+      <div class="badges reveal">
+        <span>Campeón nacional U18</span><span>Campeón nacional U20</span><span>Campeón nacional U23</span>
+        <span>Tricampeón universitario 400 m c/v</span><span>Top 2 del ranking nacional de Mayores</span><span>Seleccionado nacional</span>
+      </div>
+    </section>
+
+    <!-- Carrera scrollytelling -->
+    <section class="acto scrolly" data-act="deporte" id="carrera">
+      <div class="sticky">
+        <div class="carrera-head">
+          <p class="kicker">Mi prueba</p>
+          <h2>Los 400 metros con vallas</h2>
+        </div>
+        <svg id="viz-carrera" viewBox="0 0 900 420"></svg>
+        <div class="carrera-reloj"><span id="reloj">0.00</span><small>s</small></div>
+      </div>
+      <div class="pasos">
+        <div class="paso"><p><strong>La salida.</strong> 45 metros hasta la primera valla. Aquí se decide el ritmo de toda la carrera.</p></div>
+        <div class="paso"><p><strong>Las vallas.</strong> Diez obstáculos de 91,4 cm, cada 35 metros. Contar pasos, atacar, no frenar.</p></div>
+        <div class="paso"><p><strong>La curva y la contrarrecta.</strong> Las piernas empiezan a pesar. Gana quien mantiene la técnica.</p></div>
+        <div class="paso"><p><strong>Los últimos 40 metros.</strong> Ahí aprendí que una caída no define una carrera.</p></div>
+        <div class="paso"><p><strong>54.70.</strong> Mi mejor marca, el 28 de marzo de 2026 en la VIDENA. Un ritmo promedio de <span id="vel"></span> m/s.</p><p class="nota-viz">El corredor avanza a ritmo constante: es una representación del promedio, no de mis parciales reales.</p></div>
+      </div>
+    </section>
+
+    <section class="acto" data-act="deporte" id="progresion" hidden>
+      <p class="kicker centrado">Año tras año</p>
+      <h2 class="centrado">Progresión en 400 m con vallas</h2>
+      <svg id="viz-progresion"></svg>
+    </section>
+
+    <section class="acto" data-act="deporte" id="mejor-peor">
+      <div class="duelo">
+        <article class="lado mejor reveal">
+          <p class="kicker">La mejor</p>
+          <h3>Grand Prix Sudamericano, Uruguay 2026</h3>
+          <p>Mi primera medalla internacional. Llegó después de un verano entrenando en el norte del país y con el apoyo de mi entrenadora, Patricia Martínez Pinto.</p>
+          <img src="img/uruguay_podio.jpg" alt="Podio en Uruguay" loading="lazy">
+        </article>
+        <article class="lado peor reveal">
+          <p class="kicker">La que más me enseñó</p>
+          <h3>Juegos Nacionales Universitarios</h3>
+          <p>Iba ganando con más de 50 metros de ventaja y me caí en la última recta.</p>
+          <p>Ese día entendí que el resultado no se decide en un tropiezo, sino en cómo vuelves a la pista al día siguiente. Desde entonces no corro para no perder: corro para mejorar.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="acto" data-act="deporte" id="lesiones">
+      <div class="dos-col">
+        <div class="col-txt reveal">
+          <p class="kicker">Lo que no se ve en las fotos</p>
+          <h2>Tres años de lesiones</h2>
+          <p>Durante los últimos tres años las lesiones no me dejaron mostrar mi potencial. En 2026, por fin, completé una temporada sin lesiones graves.</p>
+          <p>Lo más importante que aprendí no fue físico: entendí que la salud mental pesa tanto como las piernas.</p>
+          <blockquote>Mi sueño más grande es estar en los Juegos Panamericanos Lima 2027. Lo persigo mientras termino la universidad y trabajo. No elijo entre estudiar, trabajar o entrenar: aprendí a equilibrarlo.</blockquote>
+        </div>
+        <div class="col-viz collage reveal">
+          <figure class="polaroid grande" style="--r:-2deg"><img src="img/collage_bn.jpg" alt="Entrenamiento" loading="lazy"><figcaption>volver a empezar</figcaption></figure>
+          <figure class="polaroid" style="--r:3deg"><img src="img/la_victoria_retrato.jpg" alt="Con la casaca de La Victoria" loading="lazy"><figcaption>La Victoria</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="acto" data-act="deporte" id="galeria-deporte">
+      <p class="kicker centrado">El equipo detrás</p>
+      <h2 class="centrado">Liga de Atletismo La Victoria</h2>
+      <div class="galeria reveal">
+        <figure class="polaroid" style="--r:2deg"><img src="img/la_victoria_equipo.jpg" alt="Equipo La Victoria" loading="lazy"><figcaption>el equipo</figcaption></figure>
+        <figure class="polaroid" style="--r:-2deg"><img src="img/podio_oro.jpg" alt="Podio con medalla de oro" loading="lazy"><figcaption>lo más alto del podio</figcaption></figure>
+        <figure class="polaroid" style="--r:1.5deg"><img src="img/bronce_400cv.jpg" alt="Medalla de bronce" loading="lazy"><figcaption>bronce, 400 m c/v</figcaption></figure>
+        <figure class="polaroid" style="--r:-3deg"><img src="img/entrenadora_collage.jpg" alt="Con mi entrenadora" loading="lazy"><figcaption>con Patricia</figcaption></figure>
+        <figure class="polaroid" style="--r:2.5deg"><img src="img/tres_medallistas.jpg" alt="Tres medallistas" loading="lazy"><figcaption>Festival La Victoria</figcaption></figure>
+        <figure class="polaroid" style="--r:-1deg"><img src="img/bolivarianos_mama_dacio.jpg" alt="Con mamá y Dacio en los Bolivarianos" loading="lazy"><figcaption>la barra de casa</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- ================= ACTO III: PROFESIONAL ================= -->
+    <section class="acto portada-acto" data-act="pro" id="profesional">
+      <p class="num-acto">Acto III</p>
+      <h2 class="titulo-acto">Profesional</h2>
+      <p class="lead centrado">De las aulas de UTEC a mi primera experiencia laboral.</p>
+    </section>
+
+    <section class="acto" data-act="pro" id="utec">
+      <div class="dos-col">
+        <div class="col-txt reveal">
+          <p class="kicker">UTEC, 2022 a 2027</p>
+          <h2>Ciencia de Datos</h2>
+          <p>Elegí Data Science en buena parte por mi mamá. Hoy estoy en el octavo ciclo y egreso el próximo año.</p>
+          <p>En 2024 recibí el reconocimiento <strong>UTEC Honors</strong> a la excelencia extraacadémica en la categoría deporte.</p>
+        </div>
+        <div class="col-viz collage reveal">
+          <figure class="polaroid grande" style="--r:2deg"><img src="img/utec_honors.jpg" alt="UTEC Honors" loading="lazy"><figcaption>UTEC Honors 2024</figcaption></figure>
+          <figure class="polaroid" style="--r:-2deg"><img src="img/utec_medalla.jpg" alt="Medalla con UTEC" loading="lazy"><figcaption>campeón universitario</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="acto" data-act="pro" id="trayectoria">
+      <p class="kicker centrado">2022 a hoy</p>
+      <h2 class="centrado">Mi trayectoria en una línea de tiempo</h2>
+      <div id="viz-gantt" class="viz-ancho"></div>
+      <div class="leyenda" id="leyenda-gantt"></div>
+    </section>
+
+    <section class="acto" data-act="pro" id="proyectos">
+      <p class="kicker centrado">Proyectos académicos destacados</p>
+      <h2 class="centrado">Lo que he construido</h2>
+      <div class="proyectos">
+        <article class="proyecto reveal">
+          <p class="tag">Desarrollo de Producto de Datos, 2025</p>
+          <h3>Mood Coach</h3>
+          <p>Aplicación web de salud mental con IA que evalúa estados emocionales y genera recomendaciones personalizadas.</p>
+          <ul>
+            <li>Sistema de recomendación híbrido: filtrado colaborativo y manejo de cold start.</li>
+            <li>Pipelines de datos y visualización en tiempo real.</li>
+            <li>Autenticación segura y gestión de datos en el backend.</li>
+          </ul>
+        </article>
+        <article class="proyecto reveal">
+          <p class="tag">Base de Datos I, 2024</p>
+          <h3>San Benito Artículos Religiosos</h3>
+          <p>Base de datos relacional en PostgreSQL, del modelo entidad relación a la implementación en SQL.</p>
+          <div class="kpi"><span id="kpi-35">0</span>%<small>de mejora en la eficiencia de las consultas con índices B-tree y Hash</small></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="acto" data-act="pro" id="liderazgo">
+      <p class="kicker centrado">Liderazgo y trabajo en equipo</p>
+      <h2 class="centrado">Fuera del aula</h2>
+      <div class="liderazgo">
+        <article class="lider reveal">
+          <div class="fotos-mini"><img src="img/u20_selfie.jpg" alt="Floor Manager en el Mundial U20" loading="lazy"><img src="img/u20_estadio.jpg" alt="Estadio Mundial U20" loading="lazy"><img src="img/u20_campeon.jpg" alt="Con un campeón mundial U20" loading="lazy"></div>
+          <h3>Mundial U20 de Atletismo, Lima 2024</h3>
+          <p>Floor Manager de Sport Presentation con la Federación Peruana de Atletismo. Coordiné listas de partida y fui el enlace entre la gerencia deportiva y el equipo de transmisiones de World Athletics, supervisando ceremonias y premiaciones.</p>
+        </article>
+        <article class="lider reveal">
+          <div class="fotos-mini"><img src="img/semana_universitaria.jpg" alt="Semana Universitaria" loading="lazy"></div>
+          <h3>Semana Universitaria, equipo Computech</h3>
+          <p>Líder y representante de la facultad de Computación entre 2023 y 2025. Organicé estrategias y motivé al equipo: fuimos <strong>bicampeones</strong>.</p>
+        </article>
+        <article class="lider reveal">
+          <div class="fotos-mini"><img src="img/isn_equipo.jpg" alt="International Student Network" loading="lazy"><img src="img/isn_stand.jpg" alt="Stand de ISN" loading="lazy"></div>
+          <h3>International Student Network, Brand Leader</h3>
+          <p>Coordiné sesiones y eventos para estudiantes de intercambio y gestioné las plataformas digitales de la organización.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="acto" data-act="pro" id="ibm">
+      <div class="dos-col invertido">
+        <div class="col-txt reveal">
+          <p class="kicker">El sueño</p>
+          <h2>IBM Research</h2>
+          <p>En Estados Unidos visité el IBM Research Center. Fue mi primera experiencia impactante con el mundo tech: ver un computador cuántico de cerca cambió la escala de lo que imagino para mi futuro.</p>
+          <p>Sueño con trabajar algún día en un lugar así de importante.</p>
+        </div>
+        <div class="col-viz collage reveal">
+          <figure class="polaroid grande" style="--r:-2deg"><img src="img/ibm_quantum.jpg" alt="IBM Quantum System One" loading="lazy"><figcaption>IBM Quantum System One</figcaption></figure>
+          <figure class="polaroid" style="--r:3deg"><img src="img/ibm_pantalla.jpg" alt="Frente a una pantalla en IBM" loading="lazy"><figcaption>aprendiendo</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="acto" data-act="pro" id="hochschild">
+      <div class="dos-col">
+        <div class="col-txt reveal">
+          <p class="kicker">Abril de 2026 a hoy</p>
+          <h2>Hochschild Mining</h2>
+          <p>Practicante Pre Profesional de Proyectos de Tecnología. Llegué a través de Bumerang, para completar mi curso de RLE.</p>
+          <p>El proceso de selección fue muy retador: competía con postulantes con experiencia laboral y yo era el único que nunca había trabajado. Creo que mis habilidades blandas y la confianza que transmito hicieron la diferencia.</p>
+          <p>Hoy veo todo lo relacionado a la tecnología de Gestión Humana y apoyo directamente a la gerencia corporativa.</p>
+          <ul class="lista-hitos">
+            <li>Estabilización de SAP SuccessFactors: Onboarding 2.0 y Employee Central</li>
+            <li>Seguimiento de incidencias y escalamientos con SAP</li>
+            <li>Procedimientos para la Mesa de Ayuda</li>
+            <li>Coordinación con consultoras externas</li>
+          </ul>
+        </div>
+        <div class="col-viz collage reveal">
+          <figure class="polaroid grande" style="--r:2deg"><img src="img/hochschild_almuerzo.jpg" alt="Almuerzo con el equipo" loading="lazy"><figcaption>con Soluciones Tecnológicas</figcaption></figure>
+          <figure class="polaroid" style="--r:-3deg"><img src="img/hochschild_kit.jpg" alt="Kit de bienvenida Hochschild" loading="lazy"><figcaption>día uno</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="acto" data-act="pro" id="skills">
+      <div class="dos-col">
+        <div class="col-viz reveal"><svg id="viz-radar"></svg></div>
+        <div class="col-txt reveal">
+          <p class="kicker">Caja de herramientas</p>
+          <h2>Habilidades</h2>
+          <p class="nota-viz">Autoevaluación de dominio (0 a 100). Pasa el cursor por cada eje.</p>
+          <div class="chips oscuro">
+            <span>Liderazgo</span><span>Trabajo en equipo</span><span>Comunicación efectiva</span><span>Gestión del tiempo</span><span>Pensamiento analítico</span><span>Resolución de problemas</span><span>Adaptabilidad</span><span>Proactividad</span><span>Disciplina</span>
+          </div>
+          <h3>Idiomas</h3>
+          <div class="idiomas"><div><span>Español</span><div class="barra"><i style="--w:100%"></i></div><small>Nativo</small></div><div><span>Inglés</span><div class="barra"><i style="--w:85%"></i></div><small>Avanzado</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CIERRE ================= -->
+    <section class="acto" data-act="final" id="final">
+      <div class="final">
+        <svg id="balanza-final" viewBox="0 0 520 380" aria-hidden="true"></svg>
+        <h2>El balance de la vida</h2>
+        <p class="lead">La disciplina de la pista me ordena en el trabajo, la curiosidad de los datos me hace pensar mejor cada entrenamiento y mi familia sostiene los dos lados de la balanza. No es fácil, pero es mío.</p>
+        <p class="lead">Gracias por recorrer conmigo estos tres actos.</p>
+        <div class="contacto">
+          <a href="mailto:paolo.medrano.t@gmail.com">✉ paolo.medrano.t@gmail.com</a>
+          <a href="https://www.linkedin.com/in/paolo-medrano-ter%C3%A1n-b45123246" target="_blank" rel="noopener">in LinkedIn</a>
+          <a href="https://github.com/paolomedrano0" target="_blank" rel="noopener">⌘ GitHub</a>
+        </div>
+        <figure class="polaroid hero-foto" style="--r:2deg"><img src="img/nueva_york.jpg" alt="Paolo" loading="lazy"><figcaption>continuará…</figcaption></figure>
+        <p class="creditos">Hecho con D3.js. Música: Dance No More, Harry Styles.</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="tooltip" role="tooltip"></div>
+
+  <script src="js/vendor/d3.min.js"></script>
+  <script src="js/vendor/topojson-client.min.js"></script>
+  <script src="data/countries-110m.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
